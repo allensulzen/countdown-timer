@@ -31,10 +31,10 @@ To add a countdown timer to your webpage, you can include the countdown-timer el
 
 ## Attributes
 
- - date (required): The target date and time for the countdown. Format: YYYY-MM-DDThh:mm:ss.
- - heading (optional): A heading text displayed above the countdown.
- - subheading (optional): A subheading text displayed below the countdown.
- - theme (optional): Theme for the countdown timer. Currently supports "dark" and "light" (default).
+ - `date` (required): The target date and time for the countdown. Format: YYYY-MM-DDThh:mm:ss.
+ - `heading` (optional): A heading text displayed above the countdown.
+ - `subheading` (optional): A subheading text displayed below the countdown.
+ - `theme` (optional): Theme for the countdown timer. Currently supports "dark" and "light" (default).
 
 ## Styling
 
