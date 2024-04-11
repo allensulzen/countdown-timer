@@ -14,7 +14,7 @@ A simple yet customizable countdown timer web component that can be easily integ
 To use the `countdown-timer` in your project, simply include the JavaScript file that contains the class definition for the component.
 
 ```html
-<script src="cdn/path/tbd"></script>
+<script src="your-path/countdown-timer.min.js"></script>
 ```
 
 ## Usage
