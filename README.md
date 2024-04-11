@@ -11,10 +11,10 @@ A simple yet customizable countdown timer web component that can be easily integ
 
 ## Installation
 
-To use the `countdown-timer` in your project, simply include the JavaScript file that contains the class definition for the component.
+To use the `countdown-timer` in your project, simply include the JavaScript file that contains the class definition for the component. A CDN link is provided below for easy integration:
 
 ```html
-<script src="your-path/countdown-timer.min.js"></script>
+<script src="https://www.unpkg.com/@allensulzen/countdown-timer@latest/countdown-timer.min.js"></script>
 ```
 
 ## Usage
