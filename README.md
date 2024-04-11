@@ -7,6 +7,7 @@ A simple yet customizable countdown timer web component that can be easily integ
 - **Dynamic Countdown**: Counts down to a specified date and time.
 - **Customizable**: Allows setting a heading, subheading, and theme via attributes.
 - **Responsive Design**: Adapts to different screen sizes for optimal viewing.
+ - **Light/Dark Themes**: Supports "dark" and "light" themes to match your site's design.
 
 ## Installation
 
@@ -23,10 +24,14 @@ To add a countdown timer to your webpage, you can include the countdown-timer el
 ```html
 <countdown-timer
     date="YYYY-MM-DDThh:mm:ss"
-    heading="Your Heading Here"
-    subheading="Your Subheading Here"
+    heading="Event Starts In"
+    subheading="Don't miss out!"
     theme="dark"
+    message="The event has begun!"
+    link="https://example.com"
+    linktext="Learn More"
 ></countdown-timer>
+
 ```
 
 ## Attributes
@@ -35,6 +40,9 @@ To add a countdown timer to your webpage, you can include the countdown-timer el
  - `heading` (optional): A heading text displayed above the countdown.
  - `subheading` (optional): A subheading text displayed below the countdown.
  - `theme` (optional): Theme for the countdown timer. Currently supports "dark" and "light" (default).
+  - `message` (optional): A message displayed when the countdown reaches zero.
+ - `link` (optional): A URL for a page to visit when the countdown is complete.
+ - `linktext` (optional): The text for the link displayed after the countdown ends.
 
 ## Styling
 
@@ -43,7 +51,10 @@ The component can be styled further using CSS. It is structured to allow easy cu
  - `.countdown-timer__title`: The container for the heading.
  - `.countdown-timer__content`: The container for the countdown counters.
  - `.countdown-timer__content__counter`: The individual counter for days, hours, minutes, and  - seconds.
+ - `.countdown-timer__content__counter.skeleton`: Targets the skeleton screen counters for loading state.
  - `.countdown-timer__label`: The container for the subheading.
+
+ The component does not use shadow DOM, so you can style it as you please.
 
 ```css
 .countdown-timer.theme--dark .countdown-timer__content__counter {
@@ -59,4 +70,4 @@ The component can be styled further using CSS. It is structured to allow easy cu
 
 ## Browser Compatibility
 
-The `countdown-timer` web component uses standard web technologies and should work in most modern browsers that support Web Components and Custom Elements.
+The `countdown-timer` component is built with standard web technologies, making it compatible with most modern browsers that support Web Components and Custom Elements.

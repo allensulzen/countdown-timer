@@ -4,7 +4,7 @@ class CountdownTimer extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['date', 'heading', 'subheading', 'theme'];
+        return ['date', 'heading', 'subheading', 'theme', 'message', 'link', 'linktext'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -15,6 +15,14 @@ class CountdownTimer extends HTMLElement {
     }
 
     connectedCallback() {
+        if (!this.hasAttribute('message')) {
+            this.setAttribute('message', 'Countdown Complete!');
+        }
+
+        if (!this.hasAttribute('linktext')) {
+            this.setAttribute('linktext', 'Learn More');
+        }
+
         this.render();
         this.startTimer();
     }
@@ -32,6 +40,24 @@ class CountdownTimer extends HTMLElement {
                 </div>
                 ` : ''}
                 <div class="countdown-timer__content">
+                    ${days === undefined ? `
+                        <div class="countdown-timer__content__counter skeleton">
+                            <span class="figure">--</span>
+                            <span class="label">days</span>
+                        </div>
+                        <div class="countdown-timer__content__counter skeleton">
+                            <span class="figure">--</span>
+                            <span class="label">hours</span>
+                        </div>
+                        <div class="countdown-timer__content__counter skeleton">
+                            <span class="figure">--</span>
+                            <span class="label">minutes</span>
+                        </div>
+                        <div class="countdown-timer__content__counter skeleton">
+                            <span class="figure">--</span>
+                            <span class="label">seconds</span>
+                        </div>
+                    ` : ''}
                     ${days > 0 ? `
                         <div class="countdown-timer__content__counter days">
                             <span class="figure">${days}</span>
@@ -50,7 +76,7 @@ class CountdownTimer extends HTMLElement {
                             <span class="label">${minutes !== 1 ? 'minutes' : 'minute'}</span>
                         </div>
                     `: ''}
-                    ${days > 0 || hours > 0 || minutes > 0 || seconds > 0 ? `
+                    ${seconds > -1 ? `
                         <div class="countdown-timer__content__counter seconds">
                             <span class="figure">${seconds}</span>
                             <span class="label">${seconds !== 1 ? 'seconds' : 'second'}</span>
@@ -78,7 +104,18 @@ class CountdownTimer extends HTMLElement {
 
             if (timeRemaining <= 0) {
                 this.stopTimer();
-                this.innerHTML = 'Countdown finished!';
+                this.querySelector('.ct__container').innerHTML = `
+                    <div class="countdown-timer theme--${this.theme}">
+                        <div class="countdown-timer__title">
+                            <h2>${this.message}</h2>
+                            ${this.link ? `
+                                <div class="countdown-timer__label">
+                                    <a href="${this.link}">${this.linktext}</a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
                 return;
             }
 
@@ -106,13 +143,24 @@ class CountdownTimer extends HTMLElement {
                     justify-content: center;
                     align-items: center;
                     font-family: inherit;
-                    min-height: 74px;
+                    min-height: 100px;
                 }
 
                 .countdown-timer__content .figure {
                     font-size: 28px;
                     font-weight: bold;
                     font-family: inherit;
+                }
+
+                @keyframes pulse {
+                    0%, 100% { opacity: 0.8; }
+                    25% { opacity: 0.3; }
+                    50% { opacity: 0.8; }
+                    75% { opacity: 0.3; }
+                }
+            
+                .countdown-timer__content__counter.skeleton {
+                    animation: pulse 3s ease-in-out infinite;
                 }
 
                 .countdown-timer__content__counter {
@@ -142,6 +190,10 @@ class CountdownTimer extends HTMLElement {
                     text-align: center;
                     margin-top: 1rem;
                     font-family: inherit;
+                }
+
+                .countdown-timer__label a {
+                    color: white;
                 }
 
                 .countdown-timer.theme--dark .countdown-timer__content__counter {

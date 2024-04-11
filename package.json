@@ -1,0 +1,29 @@
+{
+  "name": "countdown-timer",
+  "version": "1.0.0",
+  "description": "A Web Component that displays a timer counting down to a specified date.",
+  "main": "countdown-timer.js",
+  "scripts": {
+    "minify": "terser countdown-timer.js -c ecma=2015,computed_props=false -o countdown-timer.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allensulzen/countdown-timer.git"
+  },
+  "keywords": [
+    "Web",
+    "Component",
+    "Countdown",
+    "Timer",
+    "JavaScript"
+  ],
+  "author": "Allen Sulzen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allensulzen/countdown-timer/issues"
+  },
+  "homepage": "https://github.com/allensulzen/countdown-timer#readme",
+  "devDependencies": {
+    "terser": "^5.30.3"
+  }
+}
