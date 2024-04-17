@@ -11,6 +11,9 @@
  * - linktext: The text to display for the link when the countdown timer is complete
  * Events
  * - countdownComplete: Dispatched when the countdown timer is complete
+ * - updateTimer: Dispatched every second when the countdown timer is running
+ * - startTimer: Dispatched when the countdown timer starts
+ * - stopTimer: Dispatched when the countdown timer stops
  */
 
 class CountdownTimer extends HTMLElement {
@@ -263,13 +266,23 @@ class CountdownTimer extends HTMLElement {
 
     stopTimer() {
         clearInterval(this.timerInterval);
+        this.dispatchEvent(new CustomEvent('stopTimer'));
     }
 
     startTimer() {
         this.timerInterval = setInterval(() => {
             this.updateTime();
             this.renderTime();
+            this.dispatchEvent(new CustomEvent('updateTimer', {
+                detail: {
+                    days: this.days,
+                    hours: this.hours,
+                    minutes: this.minutes,
+                    seconds: this.seconds
+                }
+            }));
         }, 1000);
+        this.dispatchEvent(new CustomEvent('startTimer'));
     }
 
     render() {

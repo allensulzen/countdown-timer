@@ -50,6 +50,9 @@
     </main>
     <script>
         const countdownTimer = document.querySelector('countdown-timer');
+        window.onload = () => {
+            console.log('Countdown Timer loaded!');
+        };
         countdownTimer.date = new Date(Date.now() + /* 7 * 24 * 60 * 60 * */15 * 1000).toISOString();
 
         const cdsToggle = document.querySelector('cds-toggle');
