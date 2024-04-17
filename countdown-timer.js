@@ -1,3 +1,18 @@
+/**
+ * Countdown Timer Web Component
+ * 
+ * Props
+ * - date: The ending date of the countdown timer. Format: YYYY-MM-DDTHH:MM:SS
+ * - heading: The heading of the countdown timer
+ * - subheading: The subheading of the countdown timer
+ * - theme: The theme of the countdown timer. Options: light, dark, (or optionally add your own)
+ * - message: The message to display when the countdown timer is complete
+ * - link: The link to display when the countdown timer is complete
+ * - linktext: The text to display for the link when the countdown timer is complete
+ * Events
+ * - countdownComplete: Dispatched when the countdown timer is complete
+ */
+
 class CountdownTimer extends HTMLElement {
     constructor() {
         super();
@@ -23,6 +38,10 @@ class CountdownTimer extends HTMLElement {
             this.setAttribute('linktext', 'Learn More');
         }
 
+        if (!this.hasAttribute('theme')) {
+            this.setAttribute('theme', 'light');
+        }
+
         this.render();
         this.startTimer();
     }
@@ -31,105 +50,8 @@ class CountdownTimer extends HTMLElement {
         this.stopTimer();
     }
 
-    generateContent(days, hours, minutes, seconds) {
-        return `
-            <div class="countdown-timer theme--${this.theme}">
-                ${this.heading ? `
-                <div class="countdown-timer__title">
-                    <h2>${this.heading}</h2>
-                </div>
-                ` : ''}
-                <div class="countdown-timer__content">
-                    ${days === undefined ? `
-                        <div class="countdown-timer__content__counter skeleton">
-                            <span class="figure">--</span>
-                            <span class="label">days</span>
-                        </div>
-                        <div class="countdown-timer__content__counter skeleton">
-                            <span class="figure">--</span>
-                            <span class="label">hours</span>
-                        </div>
-                        <div class="countdown-timer__content__counter skeleton">
-                            <span class="figure">--</span>
-                            <span class="label">minutes</span>
-                        </div>
-                        <div class="countdown-timer__content__counter skeleton">
-                            <span class="figure">--</span>
-                            <span class="label">seconds</span>
-                        </div>
-                    ` : ''}
-                    ${days > 0 ? `
-                        <div class="countdown-timer__content__counter days">
-                            <span class="figure">${days}</span>
-                            <span class="label">${days !== 1 ? 'days' : 'day'}</span>
-                        </div>
-                    `: ''}
-                    ${days > 0 || hours > 0 ? `
-                        <div class="countdown-timer__content__counter hours">
-                            <span class="figure">${hours}</span>
-                            <span class="label">${hours !== 1 ? 'hours' : 'hour'}</span>
-                        </div>
-                    `: ''}
-                    ${days > 0 || hours > 0 || minutes > 0 ? `
-                        <div class="countdown-timer__content__counter minutes">
-                            <span class="figure">${minutes}</span>
-                            <span class="label">${minutes !== 1 ? 'minutes' : 'minute'}</span>
-                        </div>
-                    `: ''}
-                    ${seconds > -1 ? `
-                        <div class="countdown-timer__content__counter seconds">
-                            <span class="figure">${seconds}</span>
-                            <span class="label">${seconds !== 1 ? 'seconds' : 'second'}</span>
-                        </div>
-                    `: ''}
-                </div>
-                ${this.subheading ? `
-                <div class="countdown-timer__label">
-                    <span>${this.subheading}</span>
-                </div>
-                ` : ''}
-            </div>
-        `;
-    }
-
-    stopTimer() {
-        clearInterval(this.timerInterval);
-    }
-
-    startTimer() {
-        this.timerInterval = setInterval(() => {
-            const endTime = new Date(this.date);
-            const currentTime = new Date();
-            const timeRemaining = endTime - currentTime;
-
-            if (timeRemaining <= 0) {
-                this.stopTimer();
-                this.querySelector('.ct__container').innerHTML = `
-                    <div class="countdown-timer theme--${this.theme}">
-                        <div class="countdown-timer__title">
-                            <h2>${this.message}</h2>
-                            ${this.link ? `
-                                <div class="countdown-timer__label">
-                                    <a href="${this.link}">${this.linktext}</a>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-            this.querySelector('.ct__container').innerHTML = this.generateContent(days, hours, minutes, seconds);
-        }, 1000);
-    }
-
-    render() {
-        this.innerHTML = `
+    get styles() {
+        return`
             <style>
                 .countdown-timer__title {
                     text-align: center;
@@ -152,13 +74,6 @@ class CountdownTimer extends HTMLElement {
                     font-family: inherit;
                 }
 
-                @keyframes pulse {
-                    0%, 100% { opacity: 0.8; }
-                    25% { opacity: 0.3; }
-                    50% { opacity: 0.8; }
-                    75% { opacity: 0.3; }
-                }
-            
                 .countdown-timer__content__counter.skeleton {
                     animation: pulse 3s ease-in-out infinite;
                 }
@@ -193,7 +108,7 @@ class CountdownTimer extends HTMLElement {
                 }
 
                 .countdown-timer__label a {
-                    color: white;
+                    color: inherit;
                 }
 
                 .countdown-timer.theme--dark .countdown-timer__content__counter {
@@ -225,11 +140,146 @@ class CountdownTimer extends HTMLElement {
                         min-width: 23px;
                     }
                 }
+
+                @keyframes pulse {
+                    0%, 100% { opacity: 0.8; }
+                    25% { opacity: 0.3; }
+                    50% { opacity: 0.8; }
+                    75% { opacity: 0.3; }
+                }
             </style>
+        `;
+    }
+
+    get loadingState() {
+        if (this.days === undefined) {
+            return `
+                <div class="countdown-timer__content__counter skeleton">
+                    <span class="figure">--</span>
+                    <span class="label">days</span>
+                </div>
+                <div class="countdown-timer__content__counter skeleton">
+                    <span class="figure">--</span>
+                    <span class="label">hours</span>
+                </div>
+                <div class="countdown-timer__content__counter skeleton">
+                    <span class="figure">--</span>
+                    <span class="label">minutes</span>
+                </div>
+                <div class="countdown-timer__content__counter skeleton">
+                    <span class="figure">--</span>
+                    <span class="label">seconds</span>
+                </div>
+            `;
+        }
+
+        return '';
+    }
+
+    get headingTemplate() {
+        if (this.heading) {
+            return`
+                <div class="countdown-timer__title">
+                    <h2>${this.heading}</h2>
+                </div>
+            `;
+        }
+
+        return '';
+    }
+
+    get subheadingTemplate() {
+        if (this.subheading) {
+            return`
+            <div class="countdown-timer__label">
+                <span>${this.subheading}</span>
+            </div>
+            `;
+        }
+
+        return '';
+    }
+
+    get completeTemplate() {
+        return `
+            <div class="countdown-timer theme--${this.theme}">
+                <div class="countdown-timer__title">
+                    <h2>${this.message}</h2>
+                    ${this.link ? `
+                        <div class="countdown-timer__label">
+                            <a href="${this.link}">${this.linktext}</a>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    counter(timeProp) {
+        return `
+            <div class="countdown-timer__content__counter ${timeProp}">
+                <span class="figure">${this[timeProp]}</span>
+                <span class="label">${this[timeProp] !== 1 ? timeProp : timeProp.replace(/s$/, '')}</span>
+            </div>
+        `;
+    }
+
+    generateContent() {
+        return `
+            <div class="countdown-timer theme--${this.theme}">
+                ${this.headingTemplate}
+                <div class="countdown-timer__content">
+                    ${this.loadingState}
+                    ${this.days > 0 ? this.counter('days'): ''}
+                    ${this.days > 0 || this.hours > 0 ? this.counter('hours') : ''}
+                    ${this.days > 0 || this.hours > 0 || this.minutes > 0 ? this.counter('minutes') : ''}
+                    ${this.seconds > -1 ? this.counter('seconds') : ''}
+                </div>
+                ${this.subheadingTemplate}
+            </div>
+        `;
+    }
+
+    updateTime() {
+        this.endTime = new Date(this.date);
+        this.currentTime = new Date();
+        this.timeRemaining = this.endTime - this.currentTime;
+        this.days = Math.floor(this.timeRemaining / (1000 * 60 * 60 * 24));
+        this.hours = Math.floor((this.timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        this.minutes = Math.floor((this.timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+        this.seconds = Math.floor((this.timeRemaining % (1000 * 60)) / 1000);
+    }
+
+    renderTime() {
+        if (this.timeRemaining <= 0) {
+            this.stopTimer();
+            this.querySelector('.ct__container').innerHTML = this.completeTemplate;
+            this.dispatchEvent(new CustomEvent('countdownComplete'));
+            return;
+        }
+
+        this.querySelector('.ct__container').innerHTML = this.generateContent();
+    }
+
+    stopTimer() {
+        clearInterval(this.timerInterval);
+    }
+
+    startTimer() {
+        this.timerInterval = setInterval(() => {
+            this.updateTime();
+            this.renderTime();
+        }, 1000);
+    }
+
+    render() {
+        this.innerHTML = `
+            ${this.styles}
             <div class="ct__container">
                 ${this.generateContent()}
             </div>
         `;
+        this.renderTime();
     }
 }
 
