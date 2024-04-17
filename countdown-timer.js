@@ -244,6 +244,11 @@ class CountdownTimer extends HTMLElement {
     }
 
     updateTime() {
+        if (!!this.date && new Date(this.date) == 'Invalid Date') {
+            this.stopTimer();
+            throw Error('Invalid date format. Please use the format: YYYY-MM-DDTHH:MM:SS');
+        }
+
         this.endTime = new Date(this.date);
         this.currentTime = new Date();
         this.timeRemaining = this.endTime - this.currentTime;
@@ -257,7 +262,7 @@ class CountdownTimer extends HTMLElement {
         if (this.timeRemaining <= 0) {
             this.stopTimer();
             this.querySelector('.ct__container').innerHTML = this.completeTemplate;
-            this.dispatchEvent(new CustomEvent('countdownComplete'));
+            this.dispatchEvent(new CustomEvent('countdownComplete', { bubbles: true }));
             return;
         }
 
@@ -266,10 +271,20 @@ class CountdownTimer extends HTMLElement {
 
     stopTimer() {
         clearInterval(this.timerInterval);
-        this.dispatchEvent(new CustomEvent('stopTimer'));
+        this.dispatchEvent(new CustomEvent('stopTimer', {
+            detail: {
+                days: this.days,
+                hours: this.hours,
+                minutes: this.minutes,
+                seconds: this.seconds
+            },
+            bubbles: true
+        }));
     }
 
     startTimer() {
+        this.updateTime();
+        this.dispatchEvent(new CustomEvent('startTimer', { bubbles: true }));
         this.timerInterval = setInterval(() => {
             this.updateTime();
             this.renderTime();
@@ -279,10 +294,10 @@ class CountdownTimer extends HTMLElement {
                     hours: this.hours,
                     minutes: this.minutes,
                     seconds: this.seconds
-                }
+                },
+                bubbles: true
             }));
         }, 1000);
-        this.dispatchEvent(new CustomEvent('startTimer'));
     }
 
     render() {

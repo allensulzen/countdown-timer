@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer</title>
+    <script>
+        // window.addEventListener('startTimer', (e) => {
+        //     const countdownTimer = document.querySelector('countdown-timer');
+        //     console.log(countdownTimer);
+        // });
+    </script>
     <script src="countdown-timer.min.js"></script>
-    <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/toggle.min.js"></script>
+    <script type="module"
+        src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/toggle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <style>
         body {
             font-family: Poppins, sans-serif;
@@ -37,28 +47,26 @@
         }
     </style>
 </head>
+
 <body class="theme--light">
     <span id="theme"><cds-toggle label-a="Light" label-b="Dark" checked></cds-toggle></span>
     <main>
         <h1>Countdown Timer</h1>
-        <countdown-timer
-            heading="Coming Soon!"
-            subheading="Until the big event!"
-            link="#"
-            linktext="Get Tickets"
-        ></countdown-timer>
+        <script>
+            window.addEventListener('startTimer', (e) => {
+                console.log(e);
+            });
+        </script>
+        <countdown-timer heading="Coming Soon!" subheading="Until the big event!" link="#"
+            linktext="Get Tickets"></countdown-timer>
     </main>
     <script>
         const countdownTimer = document.querySelector('countdown-timer');
-        window.onload = () => {
-            console.log('Countdown Timer loaded!');
-        };
-        countdownTimer.date = new Date(Date.now() + /* 7 * 24 * 60 * 60 * */15 * 1000).toISOString();
-
+        countdownTimer.date = /* new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() */'xxx';
         const cdsToggle = document.querySelector('cds-toggle');
         cdsToggle.addEventListener('cds-toggle-changed', (e) => {
             const theme = e.srcElement.checked ? 'light' : 'dark';
-            
+
             if (theme === 'light') {
                 countdownTimer.theme = 'light';
                 document.querySelector('body').classList.add('theme--light');
@@ -71,4 +79,5 @@
         });
     </script>
 </body>
+
 </html>
