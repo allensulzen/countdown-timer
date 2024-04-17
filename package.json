@@ -1,6 +1,6 @@
 {
   "name": "@allensulzen/countdown-timer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A Web Component that displays a timer counting down to a specified date.",
   "main": "countdown-timer.js",
   "scripts": {
