@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer</title>
-    <script>
-        // window.addEventListener('startTimer', (e) => {
-        //     const countdownTimer = document.querySelector('countdown-timer');
-        //     console.log(countdownTimer);
-        // });
-    </script>
     <script src="countdown-timer.min.js"></script>
     <script type="module"
         src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/toggle.min.js"></script>
@@ -62,7 +56,7 @@
     </main>
     <script>
         const countdownTimer = document.querySelector('countdown-timer');
-        countdownTimer.date = /* new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() */'xxx';
+        countdownTimer.date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
         const cdsToggle = document.querySelector('cds-toggle');
         cdsToggle.addEventListener('cds-toggle-changed', (e) => {
             const theme = e.srcElement.checked ? 'light' : 'dark';
