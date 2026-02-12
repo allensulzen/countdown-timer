@@ -5,7 +5,7 @@
  * - date: The ending date of the countdown timer. Format: YYYY-MM-DDTHH:MM:SS
  * - heading: The heading of the countdown timer
  * - subheading: The subheading of the countdown timer
- * - theme: The theme of the countdown timer. Options: light, dark, (or optionally add your own)
+ * - theme: The theme of the countdown timer. Options: light, dark, none
  * - message: The message to display when the countdown timer is complete
  * - link: The link to display when the countdown timer is complete
  * - linktext: The text to display for the link when the countdown timer is complete
@@ -54,6 +54,10 @@ class CountdownTimer extends HTMLElement {
     }
 
     get styles() {
+        if (this.theme === "none") {
+            return '';
+        }
+
         return`
             <style>
                 .countdown-timer__title {
