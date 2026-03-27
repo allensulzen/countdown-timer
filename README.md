@@ -54,7 +54,7 @@ The component can be styled further using CSS. It is structured to allow easy cu
  - `.countdown-timer__content__counter.skeleton`: Targets the skeleton screen counters for loading state.
  - `.countdown-timer__label`: The container for the subheading.
 
- The component does not use shadow DOM, so you can style it as you please.
+The component does not use shadow DOM, so you can style it as you please. Use theme "none" to remove all built-in styling.
 
 ```css
 .countdown-timer.theme--dark .countdown-timer__content__counter {
