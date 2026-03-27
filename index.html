@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer</title>
     <script src="countdown-timer.js"></script>
-    <script type="module"
-        src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/toggle.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -27,6 +25,26 @@
             position: fixed;
             right: 1rem;
             top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        body.theme--dark #theme {
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+
+        #theme label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        #theme select {
+            font: inherit;
         }
 
         main {
@@ -43,7 +61,14 @@
 </head>
 
 <body class="theme--light">
-    <span id="theme"><cds-toggle label-a="Light" label-b="Dark" checked></cds-toggle></span>
+    <div id="theme">
+        <label for="theme-select">Theme</label>
+        <select id="theme-select" name="theme">
+            <option value="light" selected>Light</option>
+            <option value="dark">Dark</option>
+            <option value="none">None</option>
+        </select>
+    </div>
     <main>
         <h1>Countdown Timer</h1>
         <script>
@@ -51,26 +76,24 @@
                 console.log(e);
             });
         </script>
-        <countdown-timer theme="none" heading="Coming Soon!" subheading="Until the big event!" link="#"
+        <countdown-timer theme="light" heading="Coming Soon!" subheading="Until the big event!" link="#"
             linktext="Get Tickets"></countdown-timer>
     </main>
     <script>
         const countdownTimer = document.querySelector('countdown-timer');
-        countdownTimer.date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
-        const cdsToggle = document.querySelector('cds-toggle');
-        cdsToggle.addEventListener('cds-toggle-changed', (e) => {
-            const theme = e.srcElement.checked ? 'light' : 'dark';
+        const themeSelect = document.querySelector('#theme-select');
 
-            if (theme === 'light') {
-                countdownTimer.theme = 'light';
-                document.querySelector('body').classList.add('theme--light');
-                document.querySelector('body').classList.remove('theme--dark');
-            } else {
-                countdownTimer.theme = 'dark';
-                document.querySelector('body').classList.add('theme--dark');
-                document.querySelector('body').classList.remove('theme--light');
-            }
+        const applyTheme = (theme) => {
+            countdownTimer.setAttribute('theme', theme);
+            document.body.classList.toggle('theme--dark', theme === 'dark');
+            document.body.classList.toggle('theme--light', theme === 'light');
+        };
+
+        countdownTimer.date = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+        themeSelect.addEventListener('change', (e) => {
+            applyTheme(e.target.value);
         });
+        applyTheme(themeSelect.value);
     </script>
 </body>
 

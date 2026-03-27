@@ -32,6 +32,16 @@ const testProps3 = { // date is not an iso string
     message: 'My message',
 };
 
+const testProps4 = { // date is in the future with no built-in styles
+    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    heading: 'My countdown timer',
+    subheading: 'My subheading',
+    theme: 'none',
+    link: 'https://example.com',
+    linktext: 'Click here',
+    message: 'My message',
+};
+
 const applyProps = (element, props) => {
     for(let prop in props) {
         element.setAttribute(prop, props[prop]);
@@ -89,6 +99,29 @@ describe('CountdownTimer', () => {
 
         expect(element.querySelector('.countdown-timer__label a').innerHTML).toBe(testProps2.linktext);
         expect(element.querySelector('.countdown-timer__label a').getAttribute('href')).toBe(testProps2.link);
+    });
+
+    it('should omit built-in styles when theme is none', async () => {
+        applyProps(element, testProps4);
+
+        const updateTimer = new Promise(resolve => element.addEventListener('updateTimer', resolve));
+        await updateTimer;
+
+        expect(element.querySelector('style')).toBeNull();
+        expect(element.querySelector('.countdown-timer').classList.contains('theme--none')).toBe(true);
+        expect(element.querySelectorAll('.countdown-timer__content__counter').length).toBe(4);
+    });
+
+    it('should remove built-in styles when theme changes to none', async () => {
+        applyProps(element, testProps);
+
+        const firstUpdate = new Promise(resolve => element.addEventListener('updateTimer', resolve, { once: true }));
+        await firstUpdate;
+
+        element.setAttribute('theme', 'none');
+
+        expect(element.querySelector('style')).toBeNull();
+        expect(element.querySelector('.countdown-timer').classList.contains('theme--none')).toBe(true);
     });
 
     it('should throw an error if date is not an iso string', async () => {
