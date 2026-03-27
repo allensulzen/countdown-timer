@@ -7,7 +7,7 @@ A simple yet customizable countdown timer web component that can be easily integ
 - **Dynamic Countdown**: Counts down to a specified date and time.
 - **Customizable**: Allows setting a heading, subheading, and theme via attributes.
 - **Responsive Design**: Adapts to different screen sizes for optimal viewing.
- - **Light/Dark Themes**: Supports "dark" and "light" themes to match your site's design.
+- **Theme Options**: Supports "light", "dark", and "none" for an unstyled render.
 
 ## Installation
 
@@ -39,7 +39,7 @@ To add a countdown timer to your webpage, you can include the countdown-timer el
  - `date` (required): The target date and time for the countdown. Format: YYYY-MM-DDThh:mm:ss.
  - `heading` (optional): A heading text displayed above the countdown.
  - `subheading` (optional): A subheading text displayed below the countdown.
- - `theme` (optional): Theme for the countdown timer. Currently supports "dark" and "light" (default).
+ - `theme` (optional): Theme for the countdown timer. Currently supports "light" (default), "dark", and "none" for no built-in styles.
   - `message` (optional): A message displayed when the countdown reaches zero.
  - `link` (optional): A URL for a page to visit when the countdown is complete.
  - `linktext` (optional): The text for the link displayed after the countdown ends.
@@ -54,7 +54,7 @@ The component can be styled further using CSS. It is structured to allow easy cu
  - `.countdown-timer__content__counter.skeleton`: Targets the skeleton screen counters for loading state.
  - `.countdown-timer__label`: The container for the subheading.
 
- The component does not use shadow DOM, so you can style it as you please.
+The component does not use shadow DOM, so you can style it as you please. Use theme "none" to remove all built-in styling.
 
 ```css
 .countdown-timer.theme--dark .countdown-timer__content__counter {
